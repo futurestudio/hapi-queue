@@ -1,7 +1,7 @@
 {
   "name": "hapi-queue",
   "description": "",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": "Future Studio <info@futurestud.io>",
   "bugs": {
     "url": "https://github.com/fs-opensource/hapi-queue/issues"

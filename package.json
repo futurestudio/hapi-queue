@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "hoek": "~4.1.1",
-    "kue": "~0.11.5",
+    "include-all": "~4.0.3",
+    "kue": "^0.11.5",
     "lodash": "~4.17.4"
   },
   "devDependencies": {

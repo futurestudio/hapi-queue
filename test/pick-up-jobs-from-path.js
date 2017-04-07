@@ -4,7 +4,7 @@ const Lab = require('lab');
 const Code = require('code');
 const Hapi = require('hapi');
 const Path = require('path');
-const SayHelloJob = require('../jobs/SayHelloJob');
+const SayHelloJob = require('../jobs/say-hello-job');
 
 const server = new Hapi.Server();
 server.connection({port: 3000});

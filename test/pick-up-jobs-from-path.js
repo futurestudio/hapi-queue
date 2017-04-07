@@ -4,6 +4,7 @@ const Lab = require('lab');
 const Code = require('code');
 const Hapi = require('hapi');
 const Path = require('path');
+const SayHelloJob = require('../jobs/SayHelloJob');
 
 const server = new Hapi.Server();
 server.connection({port: 3000});
@@ -66,6 +67,70 @@ experiment('hapi-queue: pick up jobs and prepare Queue for processing', () => {
             Code.expect(response.statusCode).to.equal(200);
             Code.expect(payload.name).to.equal('kue');
             Code.expect(payload.workers).to.equal(3);
+
+            done();
+        });
+    });
+
+    test('test that jobs get created', (done) => {
+
+        const routeOptions = {
+            path: '/create-job',
+            method: 'GET',
+            handler: (request, reply) => {
+                const job = request.server.createJob(SayHelloJob.create({
+                    name: 'Marcus'
+                }))
+
+                reply(job);
+            }
+        };
+
+        server.route(routeOptions);
+
+        const options = {
+            url: routeOptions.path,
+            method: routeOptions.method
+        };
+
+        server.inject(options, (response) => {
+
+            const payload = JSON.parse(response.payload || '{}');
+
+            Code.expect(response.statusCode).to.equal(200);
+            Code.expect(payload.type).to.equal('hello');
+            Code.expect(payload.data).to.exist();
+            Code.expect(payload.data.name).to.equal('Marcus');
+
+            done();
+        });
+    });
+
+    test('test that jobs get processed', (done) => {
+
+        const routeOptions = {
+            path: '/process-job',
+            method: 'GET',
+            handler: (request, reply) => {
+                const job = request.server.createJob(SayHelloJob.create({
+                    name: 'Marcus'
+                }))
+
+                const saved = request.server.dispatch(job)
+                reply(saved);
+            }
+        };
+
+        server.route(routeOptions);
+
+        const options = {
+            url: routeOptions.path,
+            method: routeOptions.method
+        };
+
+        server.inject(options, (response) => {
+
+            Code.expect(response.statusCode).to.equal(200);
 
             done();
         });

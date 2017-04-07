@@ -1,22 +1,48 @@
 'use strict'
 
-let SayHello = {
-    name: 'hello',
+/**
+ * Your Job constructor, being exported
+ *
+ * @constructor
+ */
+let SayHelloBuilder = function () {}
 
-    concurrency: 10,
+/**
+ * The job's concurrency: how many workers should process queue jobs
+ *
+ * @type {number} - number of workers
+ */
+SayHelloBuilder.prototype.concurrency = 3
 
-    init (name) {
-        this.name = name
-    },
+/**
+ * Create a job with the given data
+ *
+ * @param data - the job's data that will be used for processing (in "process" function)
+ * @returns {*} an instance of this job
+ */
+SayHelloBuilder.prototype.create = (data) => {
+    this.name = 'hello'
+    this.data = data
 
-    process: (job, ctx, done) => {
-        const name = job.data.name
-        console.log('Hello: ' + name)
-        done()
-    }
+    return this
 }
 
+/**
+ * The Queue's process function that's executed for each incoming job
+ *
+ * @param job - job including the data (at job.data)
+ * @param ctx - job's context, to set progress
+ * @param done - callback that is required to be called once the job is finished
+ */
+SayHelloBuilder.prototype.process = (job, ctx, done) => {
+    const name = job.data.name
+    console.log('Hello: ' + name)
+    done()
+}
 
-exports = SayHello.init
-exports.process = SayHello.process
-exports.concurrency = SayHello.concurrency
+/**
+ * Well, just expose the SayHelloBuilder job :)
+ *
+ * @type {SayHelloBuilder}
+ */
+module.exports = new SayHelloBuilder()

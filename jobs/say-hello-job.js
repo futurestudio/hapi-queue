@@ -8,6 +8,13 @@
 let SayHelloBuilder = function () {}
 
 /**
+ * kue job type, like a queue name to group tasks of the same type
+ *
+ * @type {string} the job type's name
+ */
+SayHelloBuilder.prototype.name = 'say-hello'
+
+/**
  * The job's concurrency: how many workers should process queue jobs
  *
  * @type {number} - number of workers
@@ -21,7 +28,6 @@ SayHelloBuilder.prototype.concurrency = 3
  * @returns {*} an instance of this job
  */
 SayHelloBuilder.prototype.create = (data) => {
-    this.name = 'hello'
     this.data = data
 
     return this

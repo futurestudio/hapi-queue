@@ -5,7 +5,9 @@
  *
  * @constructor
  */
-let SayHelloBuilder = function () {}
+function SayHelloBuilder () {
+    this.name = 'hello'
+}
 
 /**
  * kue job type, like a queue name to group tasks of the same type
@@ -29,7 +31,6 @@ SayHelloBuilder.prototype.concurrency = 3
  */
 SayHelloBuilder.prototype.create = (data) => {
     this.data = data
-
     return this
 }
 
@@ -40,7 +41,7 @@ SayHelloBuilder.prototype.create = (data) => {
  * @param ctx - job's context, to set progress
  * @param done - callback that is required to be called once the job is finished
  */
-SayHelloBuilder.prototype.process = (job, ctx, done) => {
+SayHelloBuilder.prototype.process = (job, ctx, done, hapiServer) => {
     const name = job.data.name
     console.log('Hello: ' + name)
     done()
@@ -51,4 +52,9 @@ SayHelloBuilder.prototype.process = (job, ctx, done) => {
  *
  * @type {SayHelloBuilder}
  */
-module.exports = new SayHelloBuilder()
+const Builder = new SayHelloBuilder()
+
+exports.process = Builder.process
+exports.name = Builder.name
+exports.create = Builder.create
+exports.concurrency = Builder.concurrency

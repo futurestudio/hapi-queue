@@ -4,4 +4,7 @@
 
 
 ## Introduction
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/futurestudio/hapi-queue.svg)](https://greenkeeper.io/)
+
 More information coming soon :)
